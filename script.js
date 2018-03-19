@@ -16,12 +16,12 @@ var zKey;
 var p1Score = 0;
 var p1Text = '0';
 var p2Score = 0;
-var psText = '0';
+var p2Text = '0';
 
 function create() {
 
     ball = game.add.sprite(80, 350, 'ball');
-    leftPaddle = game.add.sprite(20, 350, 'paddle');
+    leftPaddle = game.add.sprite(10, 350, 'paddle');
     rightPaddle = game.add.sprite(950, 350, 'paddle');
 
     //  A simple animation that flashes the 'eyes' of the sprite
@@ -39,7 +39,7 @@ function create() {
 
     ball.body.collideWorldBounds = true;
     
-    ball.body.velocity.setTo(350, 30);
+    ball.body.velocity.setTo(350, 100);
     ball.body.bounce.set(1.05);
 
     leftPaddle.body.velocity.setTo(0, 0);
@@ -58,7 +58,7 @@ function create() {
 
     //---------------------------------------------------------------------------
 
-    p1Text = game.add.text(200, 150, "- You have clicked -\n0 times !", {
+    p1Text = game.add.text(200, 150, "0", {
         font: "65px Arial",
         fill: "white",
         align: "center"
@@ -66,6 +66,13 @@ function create() {
 
     p1Text.anchor.setTo(0.5, 0.5);
 
+    p2Text = game.add.text(800, 150, "0", {
+        font: "65px Arial",
+        fill: "white",
+        align: "center"
+    });
+
+    p2Text.anchor.setTo(0.5, 0.5);
 
     // -----------------------------------------------------------------------------
 
@@ -95,29 +102,33 @@ function update () {
 
     if (upKey.isDown)
     {
-        rightPaddle.y-=2;
+        rightPaddle.y -= 4;
     }
     else if (downKey.isDown)
     {
-        rightPaddle.y+=2;
+        rightPaddle.y += 4;
     }
 
     if (aKey.isDown)
     {
-        leftPaddle.y-=2;
+        leftPaddle.y -= 4;
     }
     else if (zKey.isDown)
     {
-        leftPaddle.y+=2;
+        leftPaddle.y += 4;
     }
 
     if(ball.x < leftPaddle.x) {
-        updateLeft();
+        ball.body.velocity.setTo(350, 100);
+        p1Score++;
+        p1Text.setText("" + p1Score);
+
+        // scoreLeft();
+    }
+    if(ball.x > rightPaddle.x) {
+        ball.body.velocity.setTo(-350, 100);
+        p2Score++;
+        p2Text.setText("" + p2Score);
     }
 
-}
-
-function updateLeft() {
-    p1Score++;
-    p1Text.setText("" + p1Score);
 }
